@@ -686,17 +686,16 @@ class Stencil
     /**
      * Generate a new PHP file.
      * 
-     * @param   string $path
      * @return  void
      */
 
-    public function generate(string $path)
+    public function generate()
     {
         $template = $this->template();
         
-        if(!file_exists($path))
+        if(!file_exists($this->filename))
         {
-            $file = fopen($path, 'w');
+            $file = fopen($this->filename, 'w');
             fwrite($file, $template);
             fclose($file);
         }
