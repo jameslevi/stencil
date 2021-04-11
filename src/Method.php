@@ -1,0 +1,432 @@
+<?php
+
+namespace Stencil;
+
+class Method
+{
+    /**
+     * Class function name.
+     * 
+     * @var string
+     */
+
+    private $name;
+
+    /**
+     * Define if method is static or not.
+     * 
+     * @var bool
+     */
+
+    private $static = false;
+
+    /**
+     * Store method visibility.
+     * 
+     * @var string
+     */
+
+    private $visibility = 'public';
+
+    /**
+     * Store method arguments.
+     * 
+     * @var array
+     */
+
+    private $arguments = array();
+
+    /**
+     * Lines inside method function.
+     * 
+     * @var array
+     */
+
+    private $body = array();
+
+    /**
+     * If method is an abstract method.
+     * 
+     * @var bool
+     */
+
+    private $abstract = false;
+
+    /**
+     * Construct a new method object.
+     * 
+     * @param   string $name
+     * @return  void
+     */
+
+    public function __construct(string $name, bool $static = false)
+    {
+        $this->name         = $name;
+        $this->static       = $static;
+    }
+
+    /**
+     * Return method name.
+     * 
+     * @return  string
+     */
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set method as static function.
+     * 
+     * @return \Stencil\Method
+     */
+
+    public function setAsStatic()
+    {
+        $this->static = true;
+
+        return $this;
+    }
+
+    /**
+     * Set method as an abstract method.
+     * 
+     * @return  \Stencil\Method
+     */
+
+    public function setAsAbstract()
+    {
+        $this->abstract = true;
+
+        return $this;
+    }
+
+    /**
+     * Set method visibility.
+     * 
+     * @param   string $visibility
+     * @return  \Stencil\Method
+     */
+
+    public function setVisibility(string $visibility)
+    {
+        $visibility = strtolower($visibility);
+
+        if(in_array($visibility, ['public', 'private', 'protected']))
+        {
+            $this->visibility = $visibility;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Return method visibility.
+     * 
+     * @return  string
+     */
+
+    public function getVisibility()
+    {
+        return $this->visibility;
+    }
+
+    /**
+     * Set method visibility to public.
+     * 
+     * @return  \Stencil\Method
+     */
+
+    public function setPublic()
+    {
+        return $this->setVisibility('public');
+    }
+
+    /**
+     * Set method visibility to private.
+     * 
+     * @return  \Stencil\Method
+     */
+
+    public function setPrivate()
+    {
+        return $this->setVisibility('private');
+    }
+
+    /**
+     * Set method visibility to protected.
+     * 
+     * @return  \Stencil\Method
+     */
+
+    public function setProtected()
+    {
+        return $this->setVisibility('protected');
+    }
+
+    /**
+     * Return true if method is a static method.
+     * 
+     * @return  bool
+     */
+
+    public function isStatic()
+    {
+        return $this->static;
+    }
+
+    /**
+     * Add new method arguments.
+     * 
+     * @param   string $name
+     * @param   mixed $default
+     * @param   string $datatype
+     * @return  \Stencil\Method
+     */
+
+    public function addParam(string $name, $default = null, string $datatype = null)
+    {
+        $this->arguments[$name] = array('value' => $default, 'datatype' => $datatype);
+
+        return $this;
+    }
+
+    /**
+     * Add new argument that requires string.
+     * 
+     * @param   string $name
+     * @param   string $default
+     * @return  \Stencil\Method
+     */
+
+    public function addStringParam(string $name, string $default = null)
+    {
+        return $this->addParam($name, $default, 'string');
+    }
+
+    /**
+     * Add new argument that requires integer.
+     * 
+     * @param   string $name
+     * @param   int $default
+     * @return  \Stencil\Method
+     */
+
+    public function addIntegerParam(string $name, int $default = null)
+    {
+        return $this->addParam($name, $default, 'int');
+    }
+
+    /**
+     * Add new argument that requires boolean.
+     * 
+     * @param   string $name
+     * @param   bool $default
+     * @return  \Stencil\Method
+     */
+
+    public function addBoolParam(string $name, bool $default = null)
+    {
+        return $this->addParam($name, $default, 'bool');
+    }
+
+    /**
+     * Add new argument that requires array.
+     * 
+     * @param   string $name
+     * @param   array $default
+     * @return  \Stencil\Method
+     */
+
+    public function addArrayParam(string $name, array $default = null)
+    {
+        return $this->addParam($name, $default, 'array');
+    }
+
+    /**
+     * Add new argument that requires float.
+     * 
+     * @param   string $name
+     * @param   float $default
+     * @return  \Stencil\Method
+     */
+
+    public function addFloatParam(string $name, float $default = null)
+    {
+        return $this->addParam($name, $default, 'float');
+    }
+
+    /**
+     * Add new line inside the method.
+     * 
+     * @param   string $string
+     * @return  \Stencil\Method
+     */
+
+    public function raw(string $string)
+    {
+        $this->body[] = trim($string);
+
+        return $this;
+    }
+
+    /**
+     * Return generated method template.
+     * 
+     * @return  array
+     */
+
+    public function templates()
+    {
+        $templates = array();
+        $abstract = $this->abstract;
+        $template = $this->visibility . " "; 
+        
+        if($abstract)
+        {
+            $template .= "abstract ";
+        }
+
+        $template .= ($this->static ? "static " : "") . "function " . $this->name . "(";
+
+        // Append the method arguments.
+        if(!empty($this->arguments))
+        {
+            foreach($this->arguments as $key => $arg)
+            {
+                if(!is_null($arg['datatype']))
+                {
+                    $template .= $arg['datatype'] . " ";
+                }
+
+                $template .= "$" . $key;
+
+                if(!is_null($arg['value']))
+                {
+                    $value = $arg['value'];
+
+                    if(is_bool($value))
+                    {
+                        $value = $value ? "true" : "false";
+                    }
+                    else if(is_string($value))
+                    {
+                        $value = '"' . addslashes($value) . '"';
+                    }
+                    else if(is_array($value))
+                    {
+                        $value = json_encode($value);
+                    }
+
+                    $template .= " = " . $value;
+                }
+
+                $template .= ", ";
+            }
+
+            $template = substr($template, 0, strlen($template) - 2);
+        }
+
+        $template .= ")";
+
+        if($abstract)
+        {
+            $template .= ";";
+        }
+
+        $templates[] = $template;
+
+        if(!$abstract)
+        {
+            $templates[] = "{";
+            $templates[] = PHP_EOL;
+
+            // Append the body of the method function.
+            if(!is_null($this->body))
+            {
+                foreach($this->body as $body)
+                {
+                    $templates[] = $body;
+                }
+            }
+
+            $templates[] = "}";
+        }
+
+        return $templates;
+    }
+
+    /**
+     * Instantiate a new public method.
+     * 
+     * @param   string $name
+     * @return  \Stencil\Method
+     */
+
+    public static function makePublic(string $name)
+    {
+        return (new self($name, false))->setPublic();
+    }
+
+    /**
+     * Instantiate a new public static method.
+     * 
+     * @param   string $name
+     * @return  \Stencil\Method
+     */
+
+    public static function makePublicStatic(string $name)
+    {
+        return self::makePublic($name)->setAsStatic();
+    }
+
+    /**
+     * Instantiate a new private method.
+     * 
+     * @param   string $name
+     * @return  \Stencil\Method
+     */
+
+    public static function makePrivate(string $name)
+    {
+        return (new self($name, false))->setPrivate();
+    }
+
+    /**
+     * Instantiate a new private static method.
+     * 
+     * @param   string $name
+     * @return  \Stencil\Method
+     */
+
+    public static function makePrivateStatic(string $name)
+    {
+        return self::makePrivate($name)->setAsStatic();
+    }
+
+    /**
+     * Instantiate a new protected method.
+     * 
+     * @param   string $name
+     * @return  \Stencil\Method
+     */
+
+    public static function makeProtected(string $name)
+    {
+        return (new self($name, false))->setProtected();
+    }
+
+    /**
+     * Instantiate a new protected static method.
+     * 
+     * @param   string $name
+     * @return  \Stencil\Method
+     */
+
+    public static function makeProtectedStatic(string $name)
+    {
+        return self::makeProtected($name)->setAsStatic();
+    }
+
+}
