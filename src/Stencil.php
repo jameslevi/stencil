@@ -207,7 +207,7 @@ class Stencil
      * @return  \Stencil\Stencil
      */
 
-    public function import(string $classname, string $alias = null)
+    public function use(string $classname, string $alias = null)
     {
         $this->imports[] = array(
             'classname'             => ucfirst($classname),
