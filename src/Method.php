@@ -462,6 +462,17 @@ class Method
      * @return  \Stencil\Method
      */
 
+    public static function makeConstructor()
+    {
+        return self::makePublicConstructor();
+    }
+
+    /**
+     * Instantiate a public constructor method.
+     * 
+     * @return  \Stencil\Method
+     */
+
     public static function makePublicConstructor()
     {
         return self::makePublic('__construct');
