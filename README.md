@@ -3,10 +3,10 @@
 ![](https://img.shields.io/badge/packagist-v1.0.0-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)  
 Is a simple PHP Class templating library.
 
-# Installation
+## Installation ##
 You can install via composer *"composer require jameslevi/stencil"*.
 
-# Getting Started
+## Getting Started ##
 1. Include the composer autoloader in your project. If you are using frameworks such as laravel, you don't need to do this step.
 ```php
 <?php
@@ -47,7 +47,7 @@ class UserController extends Controller
 {
 }
 ```
-# Import Class Implementation
+## Import Class Implementation ##
 You can use *"use"* method to import classes in to your template.
 ```php
 $php->use("Carbon\Carbon");
@@ -60,7 +60,7 @@ This command will generate code like this.
 ```php
 use Carbon\Carbon as MyDateTime;
 ```
-# Extend Classes
+## Extend Classes ##
 You can extend class using *"extends"* method. Just make sure you imported your parent class.
 ```php
 // Import the carbon class and use the alias MyDateTime.
@@ -69,7 +69,7 @@ $php->use("Carbon\Carbon", "MyDateTime");
 // Extend MyDateTime to the class.
 $php->extends("MyDateTime");
 ```
-# Implement Interfaces
+## Implement Interfaces ##
 You can implement one or more interface classes using *"implement"* method.
 ```php
 // Declare the class name.
@@ -92,7 +92,7 @@ class MyClass implements MyInterface1, MyInterface2
 {
 }
 ```
-# Abstract Class
+## Abstract Class ##
 You can set your class as an abstract class.
 ```php
 // Declare the class name.
@@ -107,7 +107,7 @@ abstract class MyAbstractClass
 {
 }
 ```
-# Raw Content
+## Raw Content ##
 You can add content in each line using *"raw"* method. You can use *"setIndention"* method to set tab spaces in the beginning of each line.
 ```php
 // Declare class name.
@@ -127,12 +127,12 @@ class MyClass
     private $my_property2;
 }
 ```
-# Line Breaks
+## Line Breaks ##
 You can add single line break using *"lineBreak"* method.
 ```php
 $php->lineBreak();
 ```
-# Constants
+## Constants ##
 You can declare constant values in your class using *"addConstant"* method.
 ```php
 $php->addConstant("PI", 3.14);
@@ -141,7 +141,7 @@ The example above will generate code like this.
 ```php
 const PI = 3.14;
 ```
-# Variables
+## Variables ##
 You can declare class variables with public, private and protected visibility.
 ```php
 $php->addVariable("name", "public", "Juan Dela Cruz");
@@ -152,7 +152,7 @@ The above example will generate code like this.
 public $name = "Juan Dela Cruz";
 private $nickname;
 ```
-# Non-Static Variables
+## Non-Static Variables ##
 Variables that are only accessible when class is instantiated.
 ```php
 // Add public variable.
@@ -170,7 +170,7 @@ public $name = "Juan Dela Cruz";
 private $age = 30;
 protected $bank_id;
 ```
-# Static Variables
+## Static Variables ##
 Variables that are accessible even without instantiating a class.
 ```php
 // Add public static variable.
@@ -188,7 +188,7 @@ public static $name = "Juan Dela Cruz";
 private static $age = 30;
 protected static $bank_id;
 ```
-# Single Line Comment
+## Single Line Comment ##
 You can add single line comment using *"addLineComment"* method.
 ```php
 $php->addLineComment("This is a single line comment.");
@@ -197,7 +197,7 @@ The above example will generate code like this.
 ```php
 // This is a single line comment.
 ```
-# Block Comment for Variables
+## Block Comment for Variables ##
 You also add multi-line comments using *"addComment"* method.
 ```php
 // Add variable comment.
@@ -219,7 +219,7 @@ The above example will generate code like this.
  
 public $name = "James Levi Crisostomo";
 ```
-# Method Functions
+## Method Functions ##
 You can add methods for your class using *"addMethod"* method.
 ```php
 // Instantiate a new method object.
@@ -234,7 +234,7 @@ public function addUser()
 {
 }
 ```
-# Static Methods
+## Static Methods ##
 You can also set if method is static using *"setAsStatic"* method.
 ```php
 // Instantiate a new method object.
@@ -252,7 +252,7 @@ public static function addUser()
 {
 }
 ```
-# Method Arguments
+## Method Arguments ##
 You can add multiple arguments in your method using *"addParam"* method.
 ```php
 // Instantiate a new method object.
@@ -271,7 +271,7 @@ public function addUser($a, int $b = 1)
 {
 }
 ```
-# Method Content
+## Method Content ##
 You can add content in to your method using *"raw"* method.
 ```php
 // Instantiate a new method object.
@@ -293,7 +293,7 @@ public function addUser()
     return null;
 }
 ```
-# Abstract Method
+## Abstract Method ##
 You can also add abstract method in to your abstract class using *"setAsAbstract"* method.
 ```php
 // Instantiate a new method object.
@@ -309,7 +309,7 @@ The above example will generate code like this.
 ```php
 abstract public function addUser();
 ```
-# Block Comments for Methods
+## Block Comments for Methods ##
 You can add block comments using *"addComment"* method.
 ```php
 // Instantiate a new method comment object.
@@ -359,7 +359,7 @@ public function addUser(int $x, int $y)
     return 'Hello World';
 }
 ```
-# Constructor Method
+## Constructor Method ##
 You can also add constructor to your class using *"makeConstructor"* static method.
 ```php
 $php->addMethod(Method::makeConstructor()->addParam("a"));
@@ -370,7 +370,7 @@ public function __construct($a)
 {
 }
 ```
-# Contribution
+## Contribution ##
 For issues, concerns and suggestions, you can email James Crisostomo via nerdlabenterprise@gmail.com.
-# License
+## License ##
 This package is an open-sourced software licensed under [MIT](https://opensource.org/licenses/MIT) License.
