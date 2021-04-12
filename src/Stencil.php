@@ -69,14 +69,6 @@ class Stencil
     private $implements = array();
 
     /**
-     * Segments of the PHP template.
-     * 
-     * @var array
-     */
-
-    private $segments = array();
-
-    /**
      * Segments per each lines.
      * 
      * @var array
@@ -95,23 +87,24 @@ class Stencil
     /**
      * Constructor the the stencil class.
      * 
-     * @param   string $filename
+     * @param   string $name
      * @return  void
      */
 
-    public function __construct(string $filename)
+    public function __construct(string $name)
     {
-        $this->filename = $filename;
+        $this->filename     = $name;
+        $this->classname    = ucfirst($name);
     }
 
     /**
-     * Set the number of tab spaces in each line.
+     * Set the number of spaces in each line.
      * 
      * @param   int $n
      * @return  \Stencil\Stencil
      */
 
-    public function setTab(int $n)
+    public function setIndention(int $n)
     {
         $this->indention = $n * 4;
 
@@ -119,7 +112,7 @@ class Stencil
     }
 
     /**
-     * Set the current namspace.
+     * Set the current namespace of class.
      * 
      * @param   string $namespace
      * @return  \Stencil\Stencil
@@ -127,7 +120,7 @@ class Stencil
 
     public function setNamespace(string $namespace)
     {
-        $this->namespace = $namespace;
+        $this->namespace = str_replace('/', '\\', $namespace);
 
         return $this;
     }
@@ -188,9 +181,9 @@ class Stencil
      * @return  \Stencil\Stencil
      */
 
-    public function setExtends(string $extends)
+    public function extends(string $extends)
     {
-        $this->extends = ucfirst($extends);
+        $this->extends = str_replace('/', '\\', ucfirst($extends));
 
         return $this;
     }
@@ -201,7 +194,7 @@ class Stencil
      * @return  string
      */
 
-    public function getExtends()
+    public function getExtendedClass()
     {
         return $this->extends;
     }
@@ -532,7 +525,7 @@ class Stencil
 
     public function lineBreak()
     {
-        $this->lines[] = PHP_EOL;
+        $this->lines[] = "";
 
         return $this;
     }
@@ -597,22 +590,22 @@ class Stencil
     }
 
     /**
-     * Generate template string.
+     * Generate PHP class template.
      * 
      * @return  string
      */
 
     public function template()
     {
-        $isClass = false;
+        $segments = array();
 
         // Always start with the php tag.
-        $this->segments[] = '<?php ' . PHP_EOL;
+        $segments[] = '<?php ' . PHP_EOL;
 
         // Add namespace if provided.
         if(!is_null($this->namespace))
         {
-            $this->segments[] = 'namespace ' . $this->namespace . ';' . PHP_EOL;
+            $segments[] = 'namespace ' . $this->namespace . ';' . PHP_EOL;
         }
 
         // Import all used PHP classes.
@@ -629,73 +622,66 @@ class Stencil
 
                 $template .= ";";
 
-                $this->segments[] = $template;
+                $segments[] = $template;
             }
 
-            $this->segments[] = PHP_EOL;
+            $segments[] = "";
         }
 
-        // If file is a PHP class.
-        if(!is_null($this->classname))
+        $template = '';
+
+        // Set the class as an abstract class.
+        if($this->abstract)
         {
-            $isClass = true;
-            $template = '';
-
-            // Set the class as an abstract class.
-            if($this->abstract)
-            {
-                $template .= 'abstract ';
-            }
-
-            $template .= 'class ' . $this->classname;
-
-            // Append the parent class if provided.
-            if(!is_null($this->extends))
-            {
-                $template .= ' extends ' . $this->extends;
-            }
-
-            // Append implemented interfaces.
-            if(!empty($this->implements))
-            {
-                $template .= ' implements ' . implode(', ', $this->implements);
-            }
-
-            $this->segments[] = $template;
-            $this->segments[] = "{";
+            $template .= 'abstract ';
         }
 
+        $template .= 'class ' . $this->classname;
+
+        // Append the parent class if provided.
+        if(!is_null($this->extends))
+        {
+            $template .= ' extends ' . $this->extends;
+        }
+
+        // Append implemented interfaces.
+        if(!empty($this->implements))
+        {
+            $template .= ' implements ' . implode(', ', $this->implements);
+        }
+
+        $segments[] = $template;
+        $segments[] = "{";
+        
         // Add the body of the template.
         if(!empty($this->lines))
         {
             foreach($this->lines as $line)
             {
-                $this->segments[] = $line;
+                $segments[] = $line;
             }
         }
 
-        // Close the class block if a PHP class.
-        if($isClass)
-        {
-            $this->segments[] = "}";
-        }
-
-        return implode(PHP_EOL, $this->segments);
+        $segments[] = "}";
+        
+        return implode(PHP_EOL, $segments);
     }
 
     /**
      * Generate a new PHP file.
      * 
+     * @param   string $path
      * @return  void
      */
 
-    public function generate()
+    public function generate(string $path)
     {
         $template = $this->template();
+        $filename = $path . ucfirst($this->filename) . '.php';
         
-        if(!file_exists($this->filename))
+        if(!file_exists($filename))
         {
-            $file = fopen($this->filename, 'w');
+            $file = fopen($filename, 'w');
             fwrite($file, $template);
             fclose($file);
         }

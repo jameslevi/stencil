@@ -103,6 +103,17 @@ class Comment
     }
 
     /**
+     * Return the variable data type.
+     * 
+     * @return  string
+     */
+
+    public function getVarType()
+    {
+        return $this->vartype;
+    }
+
+    /**
      * Set comment description content.
      * 
      * @param   string $description
@@ -355,7 +366,7 @@ class Comment
      * @return  \Stencil\Comment
      */
 
-    public static function var(string $type, string $description)
+    public static function makeVar(string $type, string $description)
     {
         return (new self('var'))->setVarType($type)->setDescription($description);
     }
@@ -367,9 +378,9 @@ class Comment
      * @return  \Stencil\Comment
      */
 
-    public static function mixedVar(string $description)
+    public static function makeMixedVar(string $description)
     {
-        return self::var('mixed', $description);
+        return self::makeVar('mixed', $description);
     }
 
     /**
@@ -379,9 +390,9 @@ class Comment
      * @return  \Stencil\Comment
      */
 
-    public static function stringVar(string $description)
+    public static function makeStringVar(string $description)
     {
-        return self::var('string', $description);
+        return self::makeVar('string', $description);
     }
 
     /**
@@ -391,9 +402,9 @@ class Comment
      * @return  \Stencil\Comment
      */
 
-    public static function intVar(string $description)
+    public static function makeIntVar(string $description)
     {
-        return self::var('int', $description);
+        return self::makeVar('int', $description);
     }
 
     /**
@@ -403,9 +414,9 @@ class Comment
      * @return  \Stencil\Comment
      */
 
-    public static function boolVar(string $description)
+    public static function makeBoolVar(string $description)
     {
-        return self::var('bool', $description);
+        return self::makeVar('bool', $description);
     }
 
     /**
@@ -415,9 +426,9 @@ class Comment
      * @return  \Stencil\Comment
      */
 
-    public static function arrayVar(string $description)
+    public static function makeArrayVar(string $description)
     {
-        return self::var('array', $description);
+        return self::makeVar('array', $description);
     }
 
     /**
@@ -427,9 +438,9 @@ class Comment
      * @return  \Stencil\Comment
      */
 
-    public static function floatval(string $description)
+    public static function makeFloatval(string $description)
     {
-        return self::var('float', $description);
+        return self::makeVar('float', $description);
     }
 
     /**
@@ -439,7 +450,7 @@ class Comment
      * @return  \Stencil\Comment
      */
 
-    public static function method(string $description)
+    public static function makeMethod(string $description)
     {
         return (new self('method'))->setDescription($description);
     }

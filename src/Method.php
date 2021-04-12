@@ -53,6 +53,14 @@ class Method
     private $abstract = false;
 
     /**
+     * Set number of spaces in the beginning of line.
+     * 
+     * @var int
+     */
+
+    private $indention = 0;
+
+    /**
      * Construct a new method object.
      * 
      * @param   string $name
@@ -63,6 +71,20 @@ class Method
     {
         $this->name         = $name;
         $this->static       = $static;
+    }
+
+    /**
+     * Set number of spaces in the beginning of line.
+     * 
+     * @param   int $indention
+     * @return  \Stencil\Method
+     */
+
+    public function setIndention(int $indention)
+    {
+        $this->indention = $indention * 4;
+
+        return $this;
     }
 
     /**
@@ -261,12 +283,18 @@ class Method
      * Add new line inside the method.
      * 
      * @param   string $string
+     * @param   int $indention
      * @return  \Stencil\Method
      */
 
-    public function raw(string $string)
+    public function raw(string $string, int $indention = -1)
     {
-        $this->body[] = trim($string);
+        if($indention < 0)
+        {
+            $indention = $this->indention;
+        }
+
+        $this->body[] = str_repeat(' ', $indention) . $string;
 
         return $this;
     }
@@ -340,7 +368,6 @@ class Method
         if(!$abstract)
         {
             $templates[] = "{";
-            $templates[] = PHP_EOL;
 
             // Append the body of the method function.
             if(!is_null($this->body))
@@ -427,6 +454,28 @@ class Method
     public static function makeProtectedStatic(string $name)
     {
         return self::makeProtected($name)->setAsStatic();
+    }
+
+    /**
+     * Instantiate a public constructor method.
+     * 
+     * @return  \Stencil\Method
+     */
+
+    public static function makePublicConstructor()
+    {
+        return self::makePublic('__construct');
+    }
+
+    /**
+     * Instantiate a private constructor method.
+     * 
+     * @return  \Stencil\Method
+     */
+
+    public static function makePrivateConstructor()
+    {
+        return self::makePrivate('__construct');
     }
 
 }
