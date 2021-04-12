@@ -1,6 +1,6 @@
 {
     "name": "jameslevi/stencil",
-    "description": "Is a simple PHP file templating library.",
+    "description": "Is a simple PHP Class templating library.",
     "type": "library",
     "license": "MIT",
     "require": {
