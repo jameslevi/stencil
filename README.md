@@ -1,14 +1,14 @@
 # Stencil
 
-![](https://img.shields.io/badge/packagist-v1.0.1-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)  
+![](https://img.shields.io/badge/packagist-v1.0.2-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)  
 Is a simple PHP Class templating library.
 
 ## Getting Started
-1. You can install via composer
+1. You can install via composer.
 ```
 composer require jameslevi/stencil
 ```
-2. Include the composer autoloader in your project. If you are using frameworks such as laravel, you don't need to do this step.
+2. If not using any framework, paste the following code at the upper part of your project to load the composer autoload mechanism.
 ```php
 <?php
 
