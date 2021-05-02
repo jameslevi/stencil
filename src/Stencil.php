@@ -9,7 +9,7 @@ class Stencil
      * 
      * @var string
      */
-    private $version = '1.0.1';
+    private $version = '1.0.2';
 
     /**
      * Filename of the file to be generated.
