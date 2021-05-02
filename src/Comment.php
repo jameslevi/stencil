@@ -1,6 +1,6 @@
 <?php
 
-namespace Stencil;
+namespace Graphite\Component\Stencil;
 
 class Comment
 {
@@ -9,7 +9,6 @@ class Comment
      * 
      * @var string
      */
-
     private $type;
 
     /**
@@ -17,15 +16,13 @@ class Comment
      * 
      * @var string
      */
-
-    private $vartype = 'mixed';
+    private $var_type = 'mixed';
 
     /**
      * Comment description content.
      * 
      * @var string
      */
-
     private $description;
 
     /**
@@ -33,7 +30,6 @@ class Comment
      * 
      * @var array
      */
-
     private $params = array();
 
     /**
@@ -41,7 +37,6 @@ class Comment
      * 
      * @var string
      */
-
     private $return = 'void';
 
     /**
@@ -50,7 +45,6 @@ class Comment
      * @param   string $type
      * @return  void
      */
-
     public function __construct(string $type) {
         $this->type = $type;
     }
@@ -60,7 +54,6 @@ class Comment
      * 
      * @return  string
      */
-
     public function getType()
     {
         return strtolower($this->type);
@@ -71,10 +64,9 @@ class Comment
      * 
      * @return bool
      */
-
     public function forVariable()
     {
-        return $this->getType() === "var";
+        return str_equals($this->getType(), "var");
     }
 
     /**
@@ -82,22 +74,20 @@ class Comment
      * 
      * @return  bool
      */
-
     public function forMethod()
     {
-        return $this->getType() === "method";
+        return str_equals($this->getType(), "method");
     }
 
     /**
      * Set variable data type.
      * 
      * @param   string $type
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function setVarType(string $type)
     {
-        $this->vartype = $type;
+        $this->var_type = $type;
 
         return $this;
     }
@@ -107,19 +97,17 @@ class Comment
      * 
      * @return  string
      */
-
     public function getVarType()
     {
-        return $this->vartype;
+        return $this->var_type;
     }
 
     /**
      * Set comment description content.
      * 
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function setDescription(string $description)
     {
         $this->description = trim($description);
@@ -132,7 +120,6 @@ class Comment
      * 
      * @return  string
      */
-
     public function getDescription()
     {
         return $this->description;
@@ -143,12 +130,11 @@ class Comment
      * 
      * @param   string $name
      * @param   string $datatype
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function addParam(string $name, string $datatype, string $description = null)
     {
-        $this->params[$name] = array(
+        $this->params[str_to_snake($name)] = array(
             'type'           => $datatype,
             'description'    => $description,
         );
@@ -161,9 +147,8 @@ class Comment
      * 
      * @param   string $name
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function addMixedParam(string $name, string $description)
     {
         return $this->addParam($name, 'mixed', $description);
@@ -174,9 +159,8 @@ class Comment
      * 
      * @param   string $name
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function addStringParam(string $name, string $description = null)
     {
         return $this->addParam($name, 'string', $description);
@@ -187,9 +171,8 @@ class Comment
      * 
      * @param   string $name
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function addIntegerParam(string $name, string $description = null)
     {
         return $this->addParam($name, 'int', $description);
@@ -200,9 +183,8 @@ class Comment
      * 
      * @param   string $name
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function addBoolParam(string $name, string $description = null)
     {
         return $this->addParam($name, 'bool', $description);
@@ -213,9 +195,8 @@ class Comment
      * 
      * @param   string $name
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function addArrayParam(string $name, string $description = null)
     {
         return $this->addParam($name, 'array', $description);
@@ -226,9 +207,8 @@ class Comment
      * 
      * @param   string $name
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function addFloatParam(string $name, string $description = null)
     {
         return $this->addParam($name, 'float', $description);
@@ -238,9 +218,8 @@ class Comment
      * Set the data type of return value.
      * 
      * @param   string $type
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function setReturnType(string $type)
     {
         $this->return = $type;
@@ -251,9 +230,8 @@ class Comment
     /**
      * Set return data type as void.
      * 
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function returnVoid()
     {
         return $this->setReturnType('void');
@@ -262,9 +240,8 @@ class Comment
     /**
      * Set return data type as mixed.
      * 
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function returnMixed()
     {
         return $this->setReturnType('mixed');
@@ -273,9 +250,8 @@ class Comment
     /**
      * Set return data type as string.
      * 
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function returnString()
     {
         return $this->setReturnType('string');
@@ -284,9 +260,8 @@ class Comment
     /**
      * Set return data type as integer.
      * 
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function returnInt()
     {
         return $this->setReturnType('int');
@@ -295,9 +270,8 @@ class Comment
     /**
      * Set return data type as boolean.
      * 
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function returnBool()
     {
         return $this->setReturnType('bool');
@@ -306,9 +280,8 @@ class Comment
     /**
      * Set return data type as array.
      * 
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function returnArray()
     {
         return $this->setReturnType('array');
@@ -317,9 +290,8 @@ class Comment
     /**
      * Set return data type as float.
      * 
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public function returnFloat()
     {
         return $this->setReturnType('float');
@@ -330,7 +302,6 @@ class Comment
      * 
      * @return  array
      */
-
     public function templates()
     {
         $segments = array();
@@ -350,7 +321,7 @@ class Comment
         }
         else
         {
-            $segments[] = " * @var " . $this->vartype;
+            $segments[] = " * @var " . $this->var_type;
         }
 
         $segments[] = " */";
@@ -363,9 +334,8 @@ class Comment
      * 
      * @param   string $type
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public static function makeVar(string $type, string $description)
     {
         return (new self('var'))->setVarType($type)->setDescription($description);
@@ -375,9 +345,8 @@ class Comment
      * Create a comment for variable with mixed values.
      * 
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public static function makeMixedVar(string $description)
     {
         return self::makeVar('mixed', $description);
@@ -387,9 +356,8 @@ class Comment
      * Create a comment for string variable.
      * 
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public static function makeStringVar(string $description)
     {
         return self::makeVar('string', $description);
@@ -399,9 +367,8 @@ class Comment
      * Create a comment for integer variable.
      * 
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public static function makeIntVar(string $description)
     {
         return self::makeVar('int', $description);
@@ -411,9 +378,8 @@ class Comment
      * Create a comment for boolean variable.
      * 
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public static function makeBoolVar(string $description)
     {
         return self::makeVar('bool', $description);
@@ -423,9 +389,8 @@ class Comment
      * Create a comment for array variable.
      * 
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public static function makeArrayVar(string $description)
     {
         return self::makeVar('array', $description);
@@ -435,9 +400,8 @@ class Comment
      * Create a comment for float variable.
      * 
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public static function makeFloatval(string $description)
     {
         return self::makeVar('float', $description);
@@ -447,9 +411,8 @@ class Comment
      * Create a new method comment.
      * 
      * @param   string $description
-     * @return  \Stencil\Comment
+     * @return  $this
      */
-
     public static function makeMethod(string $description)
     {
         return (new self('method'))->setDescription($description);

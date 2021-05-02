@@ -1,6 +1,6 @@
 <?php
 
-namespace Stencil;
+namespace Graphite\Component\Stencil;
 
 class Method
 {
@@ -9,7 +9,6 @@ class Method
      * 
      * @var string
      */
-
     private $name;
 
     /**
@@ -17,7 +16,6 @@ class Method
      * 
      * @var bool
      */
-
     private $static = false;
 
     /**
@@ -25,7 +23,6 @@ class Method
      * 
      * @var string
      */
-
     private $visibility = 'public';
 
     /**
@@ -33,7 +30,6 @@ class Method
      * 
      * @var array
      */
-
     private $arguments = array();
 
     /**
@@ -41,7 +37,6 @@ class Method
      * 
      * @var array
      */
-
     private $body = array();
 
     /**
@@ -49,7 +44,6 @@ class Method
      * 
      * @var bool
      */
-
     private $abstract = false;
 
     /**
@@ -57,7 +51,6 @@ class Method
      * 
      * @var int
      */
-
     private $indention = 0;
 
     /**
@@ -66,7 +59,6 @@ class Method
      * @param   string $name
      * @return  void
      */
-
     public function __construct(string $name, bool $static = false)
     {
         $this->name         = $name;
@@ -77,9 +69,8 @@ class Method
      * Set number of spaces in the beginning of line.
      * 
      * @param   int $indention
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function setIndention(int $indention)
     {
         $this->indention = $indention * 4;
@@ -92,7 +83,6 @@ class Method
      * 
      * @return  string
      */
-
     public function getName()
     {
         return $this->name;
@@ -101,9 +91,8 @@ class Method
     /**
      * Set method as static function.
      * 
-     * @return \Stencil\Method
+     * @return $this
      */
-
     public function setAsStatic()
     {
         $this->static = true;
@@ -114,9 +103,8 @@ class Method
     /**
      * Set method as an abstract method.
      * 
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function setAsAbstract()
     {
         $this->abstract = true;
@@ -128,9 +116,8 @@ class Method
      * Set method visibility.
      * 
      * @param   string $visibility
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function setVisibility(string $visibility)
     {
         $visibility = strtolower($visibility);
@@ -148,7 +135,6 @@ class Method
      * 
      * @return  string
      */
-
     public function getVisibility()
     {
         return $this->visibility;
@@ -157,9 +143,8 @@ class Method
     /**
      * Set method visibility to public.
      * 
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function setPublic()
     {
         return $this->setVisibility('public');
@@ -168,9 +153,8 @@ class Method
     /**
      * Set method visibility to private.
      * 
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function setPrivate()
     {
         return $this->setVisibility('private');
@@ -179,9 +163,8 @@ class Method
     /**
      * Set method visibility to protected.
      * 
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function setProtected()
     {
         return $this->setVisibility('protected');
@@ -192,7 +175,6 @@ class Method
      * 
      * @return  bool
      */
-
     public function isStatic()
     {
         return $this->static;
@@ -204,12 +186,11 @@ class Method
      * @param   string $name
      * @param   mixed $default
      * @param   string $datatype
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function addParam(string $name, $default = null, string $datatype = null)
     {
-        $this->arguments[$name] = array('value' => $default, 'datatype' => $datatype);
+        $this->arguments[str_to_snake($name)] = array('value' => $default, 'datatype' => $datatype);
 
         return $this;
     }
@@ -219,9 +200,8 @@ class Method
      * 
      * @param   string $name
      * @param   string $default
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function addStringParam(string $name, string $default = null)
     {
         return $this->addParam($name, $default, 'string');
@@ -232,9 +212,8 @@ class Method
      * 
      * @param   string $name
      * @param   int $default
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function addIntegerParam(string $name, int $default = null)
     {
         return $this->addParam($name, $default, 'int');
@@ -245,9 +224,8 @@ class Method
      * 
      * @param   string $name
      * @param   bool $default
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function addBoolParam(string $name, bool $default = null)
     {
         return $this->addParam($name, $default, 'bool');
@@ -258,9 +236,8 @@ class Method
      * 
      * @param   string $name
      * @param   array $default
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function addArrayParam(string $name, array $default = null)
     {
         return $this->addParam($name, $default, 'array');
@@ -271,9 +248,8 @@ class Method
      * 
      * @param   string $name
      * @param   float $default
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function addFloatParam(string $name, float $default = null)
     {
         return $this->addParam($name, $default, 'float');
@@ -284,9 +260,8 @@ class Method
      * 
      * @param   string $string
      * @param   int $indention
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public function raw(string $string, int $indention = -1)
     {
         if($indention < 0)
@@ -304,7 +279,6 @@ class Method
      * 
      * @return  array
      */
-
     public function templates()
     {
         $templates = array();
@@ -316,7 +290,7 @@ class Method
             $template .= "abstract ";
         }
 
-        $template .= ($this->static ? "static " : "") . "function " . $this->name . "(";
+        $template .= ($this->static ? "static " : "") . "function " . str_to_camel($this->name) . "(";
 
         // Append the method arguments.
         if(!empty($this->arguments))
@@ -388,9 +362,8 @@ class Method
      * Instantiate a new public method.
      * 
      * @param   string $name
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makePublic(string $name)
     {
         return (new self($name, false))->setPublic();
@@ -400,9 +373,8 @@ class Method
      * Instantiate a new public static method.
      * 
      * @param   string $name
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makePublicStatic(string $name)
     {
         return self::makePublic($name)->setAsStatic();
@@ -412,9 +384,8 @@ class Method
      * Instantiate a new private method.
      * 
      * @param   string $name
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makePrivate(string $name)
     {
         return (new self($name, false))->setPrivate();
@@ -424,9 +395,8 @@ class Method
      * Instantiate a new private static method.
      * 
      * @param   string $name
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makePrivateStatic(string $name)
     {
         return self::makePrivate($name)->setAsStatic();
@@ -436,9 +406,8 @@ class Method
      * Instantiate a new protected method.
      * 
      * @param   string $name
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makeProtected(string $name)
     {
         return (new self($name, false))->setProtected();
@@ -448,9 +417,8 @@ class Method
      * Instantiate a new protected static method.
      * 
      * @param   string $name
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makeProtectedStatic(string $name)
     {
         return self::makeProtected($name)->setAsStatic();
@@ -459,9 +427,8 @@ class Method
     /**
      * Instantiate a public constructor method.
      * 
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makeConstructor()
     {
         return self::makePublicConstructor();
@@ -470,9 +437,8 @@ class Method
     /**
      * Instantiate a public constructor method.
      * 
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makePublicConstructor()
     {
         return self::makePublic('__construct');
@@ -481,9 +447,8 @@ class Method
     /**
      * Instantiate a private constructor method.
      * 
-     * @return  \Stencil\Method
+     * @return  $this
      */
-
     public static function makePrivateConstructor()
     {
         return self::makePrivate('__construct');
