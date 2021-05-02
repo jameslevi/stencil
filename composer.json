@@ -1,6 +1,9 @@
 {
     "name": "jameslevi/stencil",
     "description": "Is a simple PHP Class templating library.",
+    "keywords": [
+        "PHP Class"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [

@@ -129,14 +129,14 @@ class Comment
      * Add new parameter documentation.
      * 
      * @param   string $name
-     * @param   string $datatype
+     * @param   string $data_type
      * @return  $this
      */
-    public function addParam(string $name, string $datatype, string $description = null)
+    public function addParam(string $name, string $data_type, string $description = null)
     {
         $this->params[str_to_snake($name)] = array(
-            'type'           => $datatype,
-            'description'    => $description,
+            'type'           => $data_type,
+            'description'    => trim($description),
         );
 
         return $this;
@@ -307,7 +307,7 @@ class Comment
         $segments = array();
 
         $segments[] = "/**";
-        $segments[] = " * " . trim($this->description);
+        $segments[] = " * " . $this->description;
         $segments[] = " * ";
 
         if($this->forMethod())

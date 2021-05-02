@@ -649,6 +649,7 @@ class Stencil
             $file = fopen($filename, 'w');
             fwrite($file, $this->template());
             fclose($file);
+            chmod($filename, 0777);
         }
     }
 

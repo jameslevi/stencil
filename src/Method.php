@@ -339,11 +339,11 @@ class Method
 
         $templates[] = $template;
 
+        // Append method body if set as non-abstract method.
         if(!$abstract)
         {
             $templates[] = "{";
 
-            // Append the body of the method function.
             if(!is_null($this->body))
             {
                 foreach($this->body as $body)
