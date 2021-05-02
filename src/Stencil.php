@@ -82,7 +82,7 @@ class Stencil
      */
     public function __construct(string $name)
     {
-        $this->filename     = str_to_pascal($name);
+        $this->filename     = $name;
         $this->classname    = ucfirst($name);
     }
 
